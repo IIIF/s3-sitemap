@@ -1,6 +1,8 @@
 import json
 import boto3
 import pandas as pd
+import base64
+import urllib
 
 config = {
     "IIIF/website": {
@@ -9,6 +11,8 @@ config = {
         "include": [".html" ]
     }
 }
+
+test = False
 
 def updateSitemap(conf):
     s3client = boto3.client('s3')
@@ -49,16 +53,34 @@ def updateSitemap(conf):
 # we will get lots of updates at once... plus the sitemap itself...
 def update(event, context):
     log = ""
+    returnCode = 200
+    payload = ''
     try:
-        payload = json.loads(event['body'])
-        if payload['action'] == "completed":
-            repoName = payload['repository']['full_name']
-            if repoName in config:
-                log = updateSitemap(config[repoName])
+        if 'isBase64Encoded' in event and event['isBase64Encoded']:
+            params = urllib.parse.parse_qs(base64.b64decode(event['body']).decode('utf-8'), encoding='utf-8')
+            if 'payload' in params:
+                print (type(params['payload'][0]))
+                try:
+                    payload = json.loads(params['payload'][0])
+                except ValueError as error:
+                    log += 'Failed to load payload due to \n'
+                    log += str(error) + '\n'
+                    log += params['payload'][0] + "\n"
+
             else:
-                log = "Unknown repo: {}".format(repoName)
+                print (params.keys())
+                log += "Failed to find payload parameter\n"
+        else:    
+            payload = json.loads(event['body'])
+
+        if payload and payload['action'] == "completed":
+            repoName = payload['repository']['full_name']
+            if repoName in config and not test:
+                log += updateSitemap(config[repoName])
+            else:
+                log += "Unknown repo: {}".format(repoName)
         else:
-            log = "Event not completed"
+            log += "Event not completed\n"
        
         print (log)
         print (json.dumps(payload, indent=4))
@@ -71,4 +93,4 @@ def update(event, context):
         "message": log  
     }
 
-    return {"statusCode": 200, "body": json.dumps(body)}
+    return {"statusCode": returnCode, "body": json.dumps(body)}
