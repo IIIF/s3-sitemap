@@ -49,18 +49,23 @@ def updateSitemap(conf):
 # we will get lots of updates at once... plus the sitemap itself...
 def update(event, context):
     log = ""
-    payload = json.loads(event['body'])
-    if payload['action'] == "completed":
-        repoName = payload['repository']['full_name']
-        if repoName in config:
-            log = updateSitemap(config[repoName])
+    try:
+        payload = json.loads(event['body'])
+        if payload['action'] == "completed":
+            repoName = payload['repository']['full_name']
+            if repoName in config:
+                log = updateSitemap(config[repoName])
+            else:
+                log = "Unknown repo: {}".format(repoName)
         else:
-            log = "Unknown repo: {}".format(repoName)
-    else:
-        log = "Event not completed"
-   
-    print (log)
-    print (json.dumps(payload, indent=4))
+            log = "Event not completed"
+       
+        print (log)
+        print (json.dumps(payload, indent=4))
+    except JSONDecodeError as error:
+        log = "Failed to load body as JSON"
+        print (log)
+        print (event)
 
     body = {
         "message": log  
