@@ -13,6 +13,7 @@ config = {
 def updateSitemap(conf):
     s3client = boto3.client('s3')
     contents = s3client.list_objects_v2(Bucket=conf['s3'])
+    log = ''
 
     locs = []
     lastmods = []
@@ -28,6 +29,8 @@ def updateSitemap(conf):
     
     df = pd.DataFrame({"loc": locs, "lastmod": lastmods})
 
+    log += "Loading sitemap to: {}/sitemap.xml".format(conf['s3']) 
+
     s3client.put_object(
                 ACL='public-read',
                 Bucket=conf['s3'],
@@ -41,7 +44,7 @@ def updateSitemap(conf):
                 Key = 'sitemap.xml'
     )
 
-    print()
+    return log
 
 # we will get lots of updates at once... plus the sitemap itself...
 def update(event, context):
@@ -50,12 +53,14 @@ def update(event, context):
     if payload['action'] == "completed":
         repoName = payload['repository']['full_name']
         if repoName in config:
-            updateSitemap(config[repoName])
-            log = payload
+            log = updateSitemap(config[repoName])
         else:
             log = "Unknown repo: {}".format(repoName)
     else:
         log = "Event not completed"
+   
+    print (log)
+    print (json.dumps(payload), indent=4)
 
     body = {
         "message": log  
