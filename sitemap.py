@@ -62,7 +62,7 @@ def update(event, context):
        
         print (log)
         print (json.dumps(payload, indent=4))
-    except JSONDecodeError as error:
+    except ValueError as error:
         log = "Failed to load body as JSON"
         print (log)
         print (event)
