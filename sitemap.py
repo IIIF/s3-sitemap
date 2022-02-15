@@ -60,7 +60,7 @@ def update(event, context):
         log = "Event not completed"
    
     print (log)
-    print (json.dumps(payload), indent=4)
+    print (json.dumps(payload, indent=4))
 
     body = {
         "message": log  
