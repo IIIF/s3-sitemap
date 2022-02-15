@@ -52,6 +52,7 @@ def updateSitemap(conf):
 
 # we will get lots of updates at once... plus the sitemap itself...
 def update(event, context):
+    print (event)
     log = ""
     returnCode = 200
     payload = ''
@@ -59,7 +60,6 @@ def update(event, context):
         if 'isBase64Encoded' in event and event['isBase64Encoded']:
             params = urllib.parse.parse_qs(base64.b64decode(event['body']).decode('utf-8'), encoding='utf-8')
             if 'payload' in params:
-                print (type(params['payload'][0]))
                 try:
                     payload = json.loads(params['payload'][0])
                 except ValueError as error:
@@ -73,7 +73,7 @@ def update(event, context):
         else:    
             payload = json.loads(event['body'])
 
-        if payload and payload['action'] == "completed":
+        if payload and 'action' in payload and payload['action'] == "completed":
             repoName = payload['repository']['full_name']
             if repoName in config and not test:
                 log += updateSitemap(config[repoName])
@@ -81,6 +81,8 @@ def update(event, context):
                 log += "Unknown repo: {}".format(repoName)
         else:
             log += "Event not completed\n"
+            if 'action' not in payload:
+                log += "No action field in message\n"
        
         print (log)
         print (json.dumps(payload, indent=4))
