@@ -26,6 +26,12 @@ class TestLambda(unittest.TestCase):
         response = sitemap.update(event, None)
         self.assertEqual(getStatus(response), Status.SUCCESS, msg="Unexpected status '{}'".format(getStatus(response)))
 
+    def test_wrong_workflow(self):
+        event = createEvent('tests/fixtures/wrong-workflow.json')
+
+        response = sitemap.update(event, None)
+        self.assertEqual(getStatus(response), Status.WRONG_WORKFLOW, msg="Unexpected status '{}'".format(getStatus(response)))        
+
 
 def getStatus(response):
     body = json.loads(response['body'])
