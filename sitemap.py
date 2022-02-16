@@ -9,6 +9,7 @@ config = {
     "IIIF/website": {
         "s3": "iiif-website",
         "url": "https://iiif.io/",
+        "workflow": ".github/workflows/live.yml",
         "include": [".html" ]
     }
 }
@@ -81,9 +82,17 @@ def update(event, context):
                 if payload['action'] == "completed":
                     repoName = payload['repository']['full_name']
                     if repoName in config: 
-                        status = Status.SUCCESS
-                        if not test:
-                            log += updateSitemap(config[repoName])
+                        if 'workflow' in payload and 'path' in payload['workflow']:
+                            if payload['workflow']['path'] == config[repoName]['workflow']:
+                                status = Status.SUCCESS
+                                if not test:
+                                    log += updateSitemap(config[repoName])
+                            else:       
+                                status = Status.WRONG_WORKFLOW
+                                log += "This event is for workflow {} ({}) and I want {}".format(payload['workflow']['name'], payload['workflow']['path'], config[repoName]['workflow'])
+                        else:
+                            status = Status.WRONG_WORKFLOW
+                            log += "This event doesn't have the required workflow fields set"
                     else:
                         status = Status.UNKNOWN_REPO
                         log += "Unknown repo: {}".format(repoName)
@@ -91,7 +100,6 @@ def update(event, context):
                     status = Status.ACTION_NOT_COMPLETED
             else: 
                 status = Status.MISSING_ACTION
-                
         else:
             status = Status.MISSING_PAYLOAD
             log += "Event not completed\n"
@@ -100,6 +108,7 @@ def update(event, context):
        
         if not test:
             print (log)
+            print (status.value)
             print (json.dumps(payload, indent=4))
     except ValueError as error:
         log = "Failed to load body as JSON"
@@ -120,6 +129,7 @@ class Status(str, Enum):
     ACTION_NOT_COMPLETED = "Workflow action not completed"
     MISSING_ACTION = "Action missing"
     SUCCESS = "Successfully updated sitemap"
+    WRONG_WORKFLOW = "Event is for the wrong workflow"
 
     def getStatus(status_message):
         for item in Status:

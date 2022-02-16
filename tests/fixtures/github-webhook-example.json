@@ -135,7 +135,7 @@
     "id": 16340987,
     "name": "Manually triggered workflow",
     "node_id": "W_kwDOF6lyTM4A-Vf7",
-    "path": ".github/workflows/syntax.yml",
+    "path": ".github/workflows/live.yml",
     "state": "active",
     "updated_at": "2021-12-16T18:40:41.000Z",
     "url": "https://api.github.com/repos/octo-org/octo-repo/actions/workflows/16340987"
