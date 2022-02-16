@@ -3,6 +3,7 @@ import boto3
 import pandas as pd
 import base64
 import urllib
+from enum import Enum
 
 config = {
     "IIIF/website": {
@@ -52,10 +53,12 @@ def updateSitemap(conf):
 
 # we will get lots of updates at once... plus the sitemap itself...
 def update(event, context):
-    print (event)
+    if not test:
+        print (event)
     log = ""
     returnCode = 200
     payload = ''
+    status = Status.INITAL
     try:
         if 'isBase64Encoded' in event and event['isBase64Encoded']:
             params = urllib.parse.parse_qs(base64.b64decode(event['body']).decode('utf-8'), encoding='utf-8')
@@ -68,31 +71,57 @@ def update(event, context):
                     log += params['payload'][0] + "\n"
 
             else:
-                print (params.keys())
                 log += "Failed to find payload parameter\n"
+                print (params.keys())
         else:    
             payload = json.loads(event['body'])
 
-        if payload and 'action' in payload and payload['action'] == "completed":
-            repoName = payload['repository']['full_name']
-            if repoName in config and not test:
-                log += updateSitemap(config[repoName])
-            else:
-                log += "Unknown repo: {}".format(repoName)
+        if payload:
+            if 'action' in payload:
+                if payload['action'] == "completed":
+                    repoName = payload['repository']['full_name']
+                    if repoName in config: 
+                        status = Status.SUCCESS
+                        if not test:
+                            log += updateSitemap(config[repoName])
+                    else:
+                        status = Status.UNKNOWN_REPO
+                        log += "Unknown repo: {}".format(repoName)
+                else:        
+                    status = Status.ACTION_NOT_COMPLETED
+            else: 
+                status = Status.MISSING_ACTION
+                
         else:
+            status = Status.MISSING_PAYLOAD
             log += "Event not completed\n"
             if 'action' not in payload:
                 log += "No action field in message\n"
        
-        print (log)
-        print (json.dumps(payload, indent=4))
+        if not test:
+            print (log)
+            print (json.dumps(payload, indent=4))
     except ValueError as error:
         log = "Failed to load body as JSON"
         print (log)
         print (event)
 
     body = {
-        "message": log  
+        "message": log,
+        "status": status
     }
 
     return {"statusCode": returnCode, "body": json.dumps(body)}
+
+class Status(str, Enum):
+    INITAL = "inital"
+    MISSING_PAYLOAD = "Payload parameter not set in POST body"
+    UNKNOWN_REPO = "Recieved event from Repo that isn't configured"
+    ACTION_NOT_COMPLETED = "Workflow action not completed"
+    MISSING_ACTION = "Action missing"
+    SUCCESS = "Successfully updated sitemap"
+
+    def getStatus(status_message):
+        for item in Status:
+            if status_message == item.value:
+                return item

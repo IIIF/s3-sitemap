@@ -1,0 +1,42 @@
+{
+    "version": "2.0",
+    "routeKey": "POST /",
+    "rawPath": "/",
+    "rawQueryString": "",
+    "headers": {
+        "accept": "*/*",
+        "content-length": "8993",
+        "content-type": "application/x-www-form-urlencoded",
+        "host": "8r96tvd20h.execute-api.us-east-1.amazonaws.com",
+        "user-agent": "GitHub-Hookshot/fd21872",
+        "x-amzn-trace-id": "Root=1-620be915-120be5a462e3acd0605b2321",
+        "x-forwarded-for": "140.82.115.90",
+        "x-forwarded-port": "443",
+        "x-forwarded-proto": "https",
+        "x-github-delivery": "9aa8e400-8e6a-11ec-9045-8137fe5bfc2c",
+        "x-github-event": "ping",
+        "x-github-hook-id": "343386864",
+        "x-github-hook-installation-target-id": "100629474",
+        "x-github-hook-installation-target-type": "repository"
+    },
+    "requestContext": {
+        "accountId": "420715881449",
+        "apiId": "8r96tvd20h",
+        "domainName": "8r96tvd20h.execute-api.us-east-1.amazonaws.com",
+        "domainPrefix": "8r96tvd20h",
+        "http": {
+            "method": "POST",
+            "path": "/",
+            "protocol": "HTTP/1.1",
+            "sourceIp": "140.82.115.90",
+            "userAgent": "GitHub-Hookshot/fd21872"
+        },
+        "requestId": "NmFbbhmQIAMEPEA=",
+        "routeKey": "POST /",
+        "stage": "$default",
+        "time": "15/Feb/2022:17:55:33 +0000",
+        "timeEpoch": 1644947733797
+    },
+    "body": "",
+    "isBase64Encoded": true
+}
