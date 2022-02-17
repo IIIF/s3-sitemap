@@ -11,6 +11,30 @@ config = {
         "url": "https://iiif.io/",
         "workflow": ".github/workflows/live.yml",
         "include": [".html" ]
+    },
+    "IIIF/api": {
+        "s3": "iiif-website",
+        "url": "https://iiif.io/",
+        "workflow": ".github/workflows/live.yml",
+        "include": [".html" ]
+    },
+    "IIIF/cookbook-recipes": {
+        "s3": "iiif-website",
+        "url": "https://iiif.io/",
+        "workflow": ".github/workflows/live.yml",
+        "include": [".html" ]
+    },
+    "IIIF/guides": {
+        "s3": "iiif-website",
+        "url": "https://iiif.io/",
+        "workflow": ".github/workflows/live.yml",
+        "include": [".html" ]
+    },
+    "IIIF/training": {
+        "s3": "training.iiif.io",
+        "url": "https://training.iiif.io/",
+        "workflow": ".github/workflows/master.yml",
+        "include": [".html" ]
     }
 }
 
