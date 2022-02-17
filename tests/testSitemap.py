@@ -26,6 +26,12 @@ class TestLambda(unittest.TestCase):
         response = sitemap.update(event, None)
         self.assertEqual(getStatus(response), Status.SUCCESS, msg="Unexpected status '{}'".format(getStatus(response)))
 
+    def test_training(self):
+        event = createEvent('tests/fixtures/training.json')
+
+        response = sitemap.update(event, None)
+        self.assertEqual(getStatus(response), Status.SUCCESS, msg="Unexpected status '{}'".format(getStatus(response)))
+
     def test_example(self):
         event = createEvent('tests/fixtures/github-webhook-example.json')
 
