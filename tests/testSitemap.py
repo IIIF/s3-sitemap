@@ -20,11 +20,17 @@ class TestLambda(unittest.TestCase):
 
             self.assertEqual(getStatus(response), Status.MISSING_ACTION, msg="Unexpected status '{}'".format(getStatus(response)))
 
+    def test_success(self):
+        event = createEvent('tests/fixtures/success.json')
+
+        response = sitemap.update(event, None)
+        self.assertEqual(getStatus(response), Status.SUCCESS, msg="Unexpected status '{}'".format(getStatus(response)))
+
     def test_example(self):
         event = createEvent('tests/fixtures/github-webhook-example.json')
 
         response = sitemap.update(event, None)
-        self.assertEqual(getStatus(response), Status.SUCCESS, msg="Unexpected status '{}'".format(getStatus(response)))
+        self.assertEqual(getStatus(response), Status.UNKNOWN_REPO, msg="Unexpected status '{}'".format(getStatus(response)))
 
     def test_wrong_workflow(self):
         event = createEvent('tests/fixtures/wrong-workflow.json')

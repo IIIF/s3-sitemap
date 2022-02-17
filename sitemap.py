@@ -11,6 +11,30 @@ config = {
         "url": "https://iiif.io/",
         "workflow": ".github/workflows/live.yml",
         "include": [".html" ]
+    },
+    "IIIF/api": {
+        "s3": "iiif-website",
+        "url": "https://iiif.io/",
+        "workflow": ".github/workflows/live.yml",
+        "include": [".html" ]
+    },
+    "IIIF/cookbook-recipes": {
+        "s3": "iiif-website",
+        "url": "https://iiif.io/",
+        "workflow": ".github/workflows/live.yml",
+        "include": [".html" ]
+    },
+    "IIIF/guides": {
+        "s3": "iiif-website",
+        "url": "https://iiif.io/",
+        "workflow": ".github/workflows/live.yml",
+        "include": [".html" ]
+    },
+    "IIIF/training": {
+        "s3": "training.iiif.io",
+        "url": "https://training.iiif.io/",
+        "workflow": ".github/workflows/master.yml",
+        "include": [".html" ]
     }
 }
 
@@ -54,8 +78,8 @@ def updateSitemap(conf):
 
 # we will get lots of updates at once... plus the sitemap itself...
 def update(event, context):
-    if not test:
-        print (event)
+    #if not test:
+    #    print (event)
     log = ""
     returnCode = 200
     payload = ''
@@ -109,7 +133,7 @@ def update(event, context):
         if not test:
             print (log)
             print (status.value)
-            print (json.dumps(payload, indent=4))
+        #    print (json.dumps(payload, indent=4))
     except ValueError as error:
         log = "Failed to load body as JSON"
         print (log)

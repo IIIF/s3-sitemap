@@ -1,3 +1,5 @@
+
+
 {
   "action": "completed",
   "organization": {
@@ -38,7 +40,7 @@
     "forks": 0,
     "forks_count": 0,
     "forks_url": "https://api.github.com/repos/Codertocat/Hello-World/forks",
-    "full_name": "IIIF/website",
+    "full_name": "Codertocat/Hello-World",
     "git_commits_url": "https://api.github.com/repos/Codertocat/Hello-World/git/commits{/sha}",
     "git_refs_url": "https://api.github.com/repos/Codertocat/Hello-World/git/refs{/sha}",
     "git_tags_url": "https://api.github.com/repos/Codertocat/Hello-World/git/tags{/sha}",
@@ -135,7 +137,7 @@
     "id": 16340987,
     "name": "Manually triggered workflow",
     "node_id": "W_kwDOF6lyTM4A-Vf7",
-    "path": ".github/workflows/live.yml",
+    "path": ".github/workflows/syntax.yml",
     "state": "active",
     "updated_at": "2021-12-16T18:40:41.000Z",
     "url": "https://api.github.com/repos/octo-org/octo-repo/actions/workflows/16340987"
