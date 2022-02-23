@@ -49,7 +49,6 @@ class TestLambda(unittest.TestCase):
 
         self.assertEqual(len(locs), len(lastmods), msg="Lenght of URLs should match the URLs")
 
-        print (locs)
         self.assertTrue("https://iiif.io/news/2022/02/02/Jisc-and-KB-join-consortium/index.html" in locs,msg="")
 
 def getStatus(response):
