@@ -44,6 +44,13 @@ class TestLambda(unittest.TestCase):
         response = sitemap.update(event, None)
         self.assertEqual(getStatus(response), Status.WRONG_WORKFLOW, msg="Unexpected status '{}'".format(getStatus(response)))        
 
+    def test_sitemap(self):
+        (locs, lastmods) = sitemap.updateSitemap(sitemap.config["IIIF/website"])
+
+        self.assertEqual(len(locs), len(lastmods), msg="Lenght of URLs should match the URLs")
+
+        print (locs)
+        self.assertTrue("https://iiif.io/news/2022/02/02/Jisc-and-KB-join-consortium/index.html" in locs,msg="")
 
 def getStatus(response):
     body = json.loads(response['body'])
