@@ -17,5 +17,13 @@ jobs:
           cache: 'pip'
       - run: pip install -r requirements.txt
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_KEY}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+
+
       - name: Test
         run: python -m unittest discover -s tests

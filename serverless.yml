@@ -12,12 +12,23 @@ provider:
       statements:
         - Effect: 'Allow'
           Action:
-            - 's3:PutObject'
-            - 's3:GetObject'
-            - 's3:GetObjectVersion'
+            - 's3:*Object*'
+          Resource:
+            - 'arn:aws:s3:::iiif-website/*'
+            - 'arn:aws:s3:::training.iiif.io/*'
+        - Effect: 'Allow'
+          Action:
             - 's3:ListBucket'
           Resource:
             - 'arn:aws:s3:::iiif-website'
+            - 'arn:aws:s3:::training.iiif.io'
+        - Effect: 'Allow'
+          Action:
+            - 'logs:CreateLogStream'
+            - 'logs:CreateLogGroup'
+            - 'logs:PutLogEvents'
+          Resource:
+            - 'arn:aws:logs:us-east-1:420715881449:log-group:/aws/lambda/s3-sitemap:*'
 
 functions:
   sitemap:
