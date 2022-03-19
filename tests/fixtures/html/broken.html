@@ -2,24 +2,16 @@
 <html lang='en'><head>
   <meta charset="utf-8">
   <title>
-     Versioning of APIs —  IIIF | International Image Interoperability Framework
+     `sequence` Range with partial canvases —  IIIF | International Image Interoperability Framework
   </title>
-  <meta name="description" content="IIIF is a set of open standards for delivering high-quality digital objects online at scale. It’s also the international community that makes it all work.">
-  <link rel="shortcut icon" href="/api/assets/favicon.ico">
- <link rel="apple-touch-icon" sizes="180x180" href="/api/assets/apple-touch-icon.png">
- <link rel="icon" type="image/png" sizes="32x32" href="/api/assets/favicon-32x32.png">
- <link rel="icon" type="image/png" sizes="16x16" href="/api/assets/favicon-16x16.png">
- <link rel="manifest" href="/api/assets/site.webmanifest">
- <link rel="mask-icon" href="/api/assets/safari-pinned-tab.svg" color="#E82334">
- <meta name="msapplication-TileColor" content="#da532c">
- <meta name="theme-color" content="#ffffff">
-
-
+  <meta name="description" content="">
+  <link rel="shortcut icon" href="">
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/api/assets/css/style.css">
-  <script>
+  <link rel="stylesheet" href="/api/cookbook/assets/css/style.css">
+  <link rel="canonical" href="https://iiif.io/api/cookbook/recipe/0028-sequence-range-partial-canvases/" />
+  <link rel="shortcut icon" type="image/jpg" href="https://iiif.io/api/cookbook/assets/favicon.ico"/>    <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -28,20 +20,6 @@
       ga('create', 'UA-7219229-22', 'iiif.io');
       ga('send', 'pageview');
     </script>
-
-
-    <!-- Begin Jekyll SEO tag v2.8.0 -->
-<meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="Versioning of APIs" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:url" content="/api/annex/notes/semver/" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Versioning of APIs" />
-<meta name="twitter:site" content="@iiif_io" />
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","headline":"Versioning of APIs","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/api/assets/favicon.ico"}},"url":"/api/annex/notes/semver/"}</script>
-<!-- End Jekyll SEO tag -->
 
 </head>
 <body>
@@ -57,7 +35,7 @@
   <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://iiif.io/">
-        <img src="/api/assets/images/logos/logo-sm.png" alt="IIIF logo" height="28">
+        <img src="https://iiif.io/api/cookbook/assets/images/logos/logo-sm.png" alt="IIIF logo" height="28">
         <span class="brand-title">International Image Interoperability Framework</span>
       </a>
       <div class="navbar-burger" data-target="navbar" onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
@@ -73,16 +51,7 @@
           
             <a class="navbar-item" href="https://iiif.io/demos">Demos</a>
           
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link"  href="https://iiif.io/news-and-events">
-                News & Events
-              </a>
-              <div class="navbar-dropdown is-boxed is-active">
-                
-                  <a class="navbar-item" href="https://iiif.io/event/2022/cambridge">Cambridge 2022</a>
-                
-              </div>
-            </div>
+            <a class="navbar-item" href="https://iiif.io/news-and-events">News & Events</a>
           
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link"  href="https://iiif.io/get-involved">
@@ -111,7 +80,7 @@
                 
                   <a class="navbar-item" href="https://iiif.io/guides">Guides</a>
                 
-                  <a class="navbar-item" href="/api">APIs & Documentation</a>
+                  <a class="navbar-item" href="https://iiif.io/api">APIs & Documentation</a>
                 
                   <a class="navbar-item" href="https://iiif.io/get-started/cookbook">Cookbooks</a>
                 
@@ -130,10 +99,18 @@
   <div class="hero-body container">
 
     
+    <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+      <ul>
+        
+          <li><a href="https://iiif.io/api/cookbook/index.html">IIIF Cookbook</a></li>
+        
+      </ul>
+    </nav>
+    
 
     <div class="container has-text-centered">
       
-      <h1 class="title is-size-2 is-size-3-mobile is-size-desktop is-size-1-widescreen">Versioning of APIs</h1>
+      <h1 class="title is-size-2 is-size-3-mobile is-size-desktop is-size-1-widescreen">`sequence` Range with partial canvases</h1>
       
 
       
@@ -146,31 +123,51 @@
 </section>
 <section id="main">
       
-      
       <div class='container-block is-max-widescreen'><div class='container' markdown='1'>
   <div class="content">
-    <p>Starting with the 2.0.0 releases of the <abbr title="International Image Interoperability Framework">IIIF</abbr> <a href="/api/image/3.0/" title="Image API">Image <abbr title="Application Programming Interface">API</abbr></a> and <a href="/api/presentation/3.0/" title="Presentation API">Presentation <abbr title="Application Programming Interface">API</abbr></a>, all future specifications will follow <a href="http://semver.org/spec/v2.0.0.html" title="Semantic Versioning 2.0.0">Semantic Versioning</a> with version numbers of the form “MAJOR.MINOR.PATCH” where:</p>
+    <link rel='stylesheet' href="https://iiif.io/api/cookbook/css/style.css"/>
+<link rel='stylesheet' href="https://iiif.io/api/cookbook/css/prism.css"/>
 
-<ul>
-  <li>MAJOR version increment indicates incompatible <abbr title="Application Programming Interface">API</abbr> changes.</li>
-  <li>MINOR version increment indicates addition of functionality in a backwards-compatible manner.</li>
-  <li>PATCH version increment indicates backwards-compatible bug fixes.</li>
-</ul>
+<h2 id="use-case">Use Case</h2>
 
-<p>This versioning system will be implemented in the following ways:</p>
+<p>Why is this pattern is important?</p>
 
-<ul>
-  <li>URIs for the specifications will be updated with major and minor versions, with patch versions edited in place.</li>
-  <li>URIs for compliance and context documents will be updated with major versions only, and otherwise edited in place.</li>
-  <li>URIs identifying a protocol (e.g. <code class="language-plaintext highlighter-rouge">http://iiif.io/api/image</code> for the <abbr title="International Image Interoperability Framework">IIIF</abbr> <a href="/api/image/3.0/" title="Image API">Image <abbr title="Application Programming Interface">API</abbr></a>) will not change with versioning.</li>
-</ul>
+<h2 id="implementation-notes">Implementation notes</h2>
 
-<p>In the case of the APIs with external compliance documents, changes to either the <abbr title="Application Programming Interface">API</abbr> itself or the corresponding compliance document (e.g. <a href="/api/image/3.0/compliance/" title="Image API Compliance">Image <abbr title="Application Programming Interface">API</abbr> compliance document</a>) will increment the version number as appropriate. In all cases, major and minor releases will be accompanied by a change log, while changes in patch releases will be appended to the change log for the latest major or minor release.</p>
+<p>How does one implement the pattern?</p>
 
-<p>As compliance documents specify required functionality and only have major versions, no new mandatory functionality will be introduced between major versions.  New features will be either recommended or optional.  If a feature is intended to become mandatory in a future major version, this will be recorded when the decision is made in the <a href="https://iiif.io/api/annex/notes/proposed-changes/" title="Proposed Changes">proposed changes</a> document.</p>
+<h2 id="restrictions">Restrictions</h2>
 
-<p>While the APIs should always be consistent and compatible, it is not intended that version numbers will necessarily remain synchronized across the <abbr title="International Image Interoperability Framework">IIIF</abbr> suite of APIs. A change in one <abbr title="Application Programming Interface">API</abbr> will not advance the version number of another.</p>
+<p>When is this pattern is usable / not usable? Is it deprecated? If it uses multiple specifications, which versions are needed, etc.? (Not present if not needed.)</p>
 
+<h2 id="example">Example</h2>
+
+<p>Describe in prose and provide examples, e.g.:</p>
+
+<pre><code class="language-json-doc">{
+  "@context": [
+    "http://www.w3.org/ns/anno.jsonld",
+    "http://iiif.io/api/presentation//context.json"
+  ],
+  "id": "https://example.org/iiif/book1/manifest",
+  "type": "Manifest" 
+}
+</code></pre>
+
+<h1 id="related-recipes">Related recipes</h1>
+
+<p>Provide a bulleted list of related recipes and why they are relevant.</p>
+
+<!-- acronyms.md as placeholder for API equivalent -->
+
+
+
+<script src='https://iiif.io/api/cookbook/js/prism.js'></script>
+<script>
+    Prism.plugins.customClass.map({
+        number: 'prism-number'
+    });
+</script>
 
   </div>
 </div></div>
@@ -182,8 +179,8 @@
     <div class="columns">
 
       <div class="navbar-brand column is-half">
-        <a class="navbar-item" href="/api/">
-          <img src="/api/assets/images/logos/logo-sm.png" alt="IIIF logo" height="28">
+        <a class="navbar-item" href="https://iiif.io/api/cookbook/">
+          <img src="https://iiif.io/api/cookbook/assets/images/logos/logo-sm.png" alt="IIIF logo" height="28">
           <span class="brand-title blue-text">International Image Interoperability Framework</span>
         </a>
         <p>IIIF is a set of open standards for delivering high-quality, attributed digital objects online at scale. It’s also an international community developing and implementing the IIIF APIs. IIIF is backed by a consortium of leading cultural institutions.</p>
@@ -199,7 +196,7 @@
           </li>
         
           <li>
-            <a href="/api">APIs & Documentation</a>
+            <a href="https://iiif.io/api">APIs & Documentation</a>
           </li>
         
           <li>
@@ -249,7 +246,7 @@
 </footer><script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://kit.fontawesome.com/2c3e99340f.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/api/assets/js/carouselInit.js"></script>
+    <script type="text/javascript" src="https://iiif.io/api/cookbook/assets/js/carouselInit.js"></script>
 
     
         <!-- Read the Formbutton docs at formspree.io/formbutton/docs. See more examples at codepen.io/formspree -->

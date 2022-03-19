@@ -42,21 +42,23 @@ config = {
 
 test = False
 
-def conicalElements(soup):
+def canonicalElements(soup):
     links = soup.find_all("link")
 
     for link in links:
         if link.has_attr('rel') and link.get("rel")[0] == "canonical":
             return link.get("href")
+    return None         
 
 def checkURL(soup, host, path):    
     location = host + path
-    for meta in soup.find_all('meta'):
-        if meta.get('http-equiv') == 'refresh' and 'url' in meta.get('content'):
-            conical = conicalElements(soup)
-            location = host + conical 
-            break
-    
+    canonical = canonicalElements(soup)
+    if canonical:
+        if 'http' in canonical:
+            location = canonical
+        else:
+            location = host + canonical 
+
     return location
 
 def updateSitemap(conf):
@@ -78,9 +80,11 @@ def updateSitemap(conf):
                     print ('loading {}'.format(file['Key']))
                     # check to see if this is a redirect html page
                     soup = BeautifulSoup(s3client.get_object(Bucket=conf['s3'], Key=file['Key'])['Body'].read().decode('utf-8'), 'html.parser')
+                    print ('checking URL {}'.format(file['Key']))
                     location = checkURL(soup, conf['url'], file['Key'])
 
                 if location not in locations:
+                    print ('Adding {}'.format(location))
                     locations[location] = file['LastModified'].strftime("%Y-%m-%d")
                 else:
                     print ('Found duplicate: {} from {}'.format(location,  conf['url'] + file['Key']))

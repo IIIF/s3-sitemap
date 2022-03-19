@@ -28,5 +28,15 @@ class TestLambda(unittest.TestCase):
 
             self.assertEqual(url, host + filename, msg="Expected a different URL got '{}'".format(url))
 
+    def test_conical(self):
+        filename = 'tests/fixtures/html/broken.html'
+        with open(filename) as fp:
+            soup = BeautifulSoup(fp, 'html.parser')
+            host = 'https://example.com'
+
+            url = sitemap.checkURL(soup, host, filename)
+
+            self.assertEqual(url, 'https://iiif.io/api/cookbook/recipe/0028-sequence-range-partial-canvases/', msg="Expected a different URL got '{}'".format(url))
+
 if __name__ == '__main__':
     unittest.main()
