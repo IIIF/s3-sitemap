@@ -1,3 +1,4 @@
 pandas
 lxml
 boto3
+beautifulsoup4

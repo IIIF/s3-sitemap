@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset="utf-8">
+  <title>
+     Versioning of APIs —  IIIF | International Image Interoperability Framework
+  </title>
+  <meta name="description" content="IIIF is a set of open standards for delivering high-quality digital objects online at scale. It’s also the international community that makes it all work.">
+  <link rel="shortcut icon" href="/api/assets/favicon.ico">
+ <link rel="apple-touch-icon" sizes="180x180" href="/api/assets/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/api/assets/favicon-32x32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/api/assets/favicon-16x16.png">
+ <link rel="manifest" href="/api/assets/site.webmanifest">
+ <link rel="mask-icon" href="/api/assets/safari-pinned-tab.svg" color="#E82334">
+ <meta name="msapplication-TileColor" content="#da532c">
+ <meta name="theme-color" content="#ffffff">
+
+
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/api/assets/css/style.css">
+  <link rel="canonical" href="/api/annex/notes/semver/" />    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-7219229-22', 'iiif.io');
+      ga('send', 'pageview');
+    </script>
+
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Versioning of APIs" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="/api/annex/notes/semver/" />
+<meta property="og:url" content="/api/annex/notes/semver/" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Versioning of APIs" />
+<meta name="twitter:site" content="@iiif_io" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Versioning of APIs","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/api/assets/favicon.ico"}},"url":"/api/annex/notes/semver/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+
+<section class="hero is-primary" style="background-image: linear-gradient(to bottom, rgba(0, 25, 39, 0.68), rgba(0, 25, 39, 0.68));
+  background-size: cover;
+  background-position: bottom center;
+  background-attachment: fixed;
+  ">
+  
+  <div class="hero-head">
+    <nav id="navbar" class="navbar is-transparent is-spaced">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://iiif.io/">
+        <img src="/api/assets/images/logos/logo-sm.png" alt="IIIF logo" height="28">
+        <span class="brand-title">International Image Interoperability Framework</span>
+      </a>
+      <div class="navbar-burger" data-target="navbar" onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="navbar-menu">
+      <div class="navbar-end">
+            <a class="navbar-item" href="https://iiif.io/">Home</a>
+          
+            <a class="navbar-item" href="https://iiif.io/demos">Demos</a>
+          
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link"  href="https://iiif.io/news-and-events">
+                News & Events
+              </a>
+              <div class="navbar-dropdown is-boxed is-active">
+                
+                  <a class="navbar-item" href="https://iiif.io/event/2022/cambridge">Cambridge 2022</a>
+                
+              </div>
+            </div>
+          
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link"  href="https://iiif.io/get-involved">
+                Get Involved
+              </a>
+              <div class="navbar-dropdown is-boxed is-active">
+                
+                  <a class="navbar-item" href="https://iiif.io/community/">Community</a>
+                
+                  <a class="navbar-item" href="https://iiif.io/community/consortium">Consortium</a>
+                
+                  <a class="navbar-item" href="https://iiif.io/newsletter">Join Newsletter</a>
+                
+                  <a class="navbar-item" href="https://iiif.io/event/conduct/">Code of Conduct</a>
+                
+              </div>
+            </div>
+          
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link"  href="https://iiif.io/get-started">
+                Get Started
+              </a>
+              <div class="navbar-dropdown is-boxed is-active">
+                
+                  <a class="navbar-item" href="https://iiif.io/get-started/how-iiif-works">How IIIF Works</a>
+                
+                  <a class="navbar-item" href="https://iiif.io/guides">Guides</a>
+                
+                  <a class="navbar-item" href="/api">APIs & Documentation</a>
+                
+                  <a class="navbar-item" href="https://iiif.io/get-started/cookbook">Cookbooks</a>
+                
+                  <a class="navbar-item" href="https://iiif.io/get-started/training">Training</a>
+                
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+</nav>
+
+  </div>
+  
+
+  <div class="hero-body container">
+
+    
+
+    <div class="container has-text-centered">
+      
+      <h1 class="title is-size-2 is-size-3-mobile is-size-desktop is-size-1-widescreen">Versioning of APIs</h1>
+      
+
+      
+      <p class="subtitle is-size-5"></p>
+      
+
+      
+    </div>
+  </div>
+</section>
+<section id="main">
+      
+      
+      <div class='container-block is-max-widescreen'><div class='container' markdown='1'>
+  <div class="content">
+    <p>Starting with the 2.0.0 releases of the <abbr title="International Image Interoperability Framework">IIIF</abbr> <a href="/api/image/3.0/" title="Image API">Image <abbr title="Application Programming Interface">API</abbr></a> and <a href="/api/presentation/3.0/" title="Presentation API">Presentation <abbr title="Application Programming Interface">API</abbr></a>, all future specifications will follow <a href="http://semver.org/spec/v2.0.0.html" title="Semantic Versioning 2.0.0">Semantic Versioning</a> with version numbers of the form “MAJOR.MINOR.PATCH” where:</p>
+
+<ul>
+  <li>MAJOR version increment indicates incompatible <abbr title="Application Programming Interface">API</abbr> changes.</li>
+  <li>MINOR version increment indicates addition of functionality in a backwards-compatible manner.</li>
+  <li>PATCH version increment indicates backwards-compatible bug fixes.</li>
+</ul>
+
+<p>This versioning system will be implemented in the following ways:</p>
+
+<ul>
+  <li>URIs for the specifications will be updated with major and minor versions, with patch versions edited in place.</li>
+  <li>URIs for compliance and context documents will be updated with major versions only, and otherwise edited in place.</li>
+  <li>URIs identifying a protocol (e.g. <code class="language-plaintext highlighter-rouge">http://iiif.io/api/image</code> for the <abbr title="International Image Interoperability Framework">IIIF</abbr> <a href="/api/image/3.0/" title="Image API">Image <abbr title="Application Programming Interface">API</abbr></a>) will not change with versioning.</li>
+</ul>
+
+<p>In the case of the APIs with external compliance documents, changes to either the <abbr title="Application Programming Interface">API</abbr> itself or the corresponding compliance document (e.g. <a href="/api/image/3.0/compliance/" title="Image API Compliance">Image <abbr title="Application Programming Interface">API</abbr> compliance document</a>) will increment the version number as appropriate. In all cases, major and minor releases will be accompanied by a change log, while changes in patch releases will be appended to the change log for the latest major or minor release.</p>
+
+<p>As compliance documents specify required functionality and only have major versions, no new mandatory functionality will be introduced between major versions.  New features will be either recommended or optional.  If a feature is intended to become mandatory in a future major version, this will be recorded when the decision is made in the <a href="https://iiif.io/api/annex/notes/proposed-changes/" title="Proposed Changes">proposed changes</a> document.</p>
+
+<p>While the APIs should always be consistent and compatible, it is not intended that version numbers will necessarily remain synchronized across the <abbr title="International Image Interoperability Framework">IIIF</abbr> suite of APIs. A change in one <abbr title="Application Programming Interface">API</abbr> will not advance the version number of another.</p>
+
+
+  </div>
+</div></div>
+
+      
+    </section>
+<footer id="footer" class="footer">
+  <div class="container">
+    <div class="columns">
+
+      <div class="navbar-brand column is-half">
+        <a class="navbar-item" href="/api/">
+          <img src="/api/assets/images/logos/logo-sm.png" alt="IIIF logo" height="28">
+          <span class="brand-title blue-text">International Image Interoperability Framework</span>
+        </a>
+        <p>IIIF is a set of open standards for delivering high-quality, attributed digital objects online at scale. It’s also an international community developing and implementing the IIIF APIs. IIIF is backed by a consortium of leading cultural institutions.</p>
+      </div>
+      <div class="column"></div>
+      
+      <div class="column menu-column">
+        <h4>About</h4>
+        <ul>
+        
+          <li>
+            <a href="https://iiif.io/get-started/how-iiif-works">How IIIF Works</a>
+          </li>
+        
+          <li>
+            <a href="/api">APIs & Documentation</a>
+          </li>
+        
+          <li>
+            <a href="https://iiif.io/demos">Demos</a>
+          </li>
+        
+          <li>
+            <a href="https://iiif.io/guides">Tutorials & Guides</a>
+          </li>
+        
+          <li>
+            <a href="https://iiif.io/privacy">Privacy policy</a>
+          </li>
+        
+        </ul>
+      </div>
+      
+      <div class="column menu-column">
+        <h4>Stay Connected</h4>
+        <ul>
+        
+          <li>
+            <a href="https://iiif.io/news-and-events">News & Events</a>
+          </li>
+        
+          <li>
+            <a href="https://iiif.io/newsletter">Join Newsletter</a>
+          </li>
+        
+          <li>
+            <a href="https://iiif.io/community/groups">Community Groups</a>
+          </li>
+        
+          <li>
+            <a href="https://iiif.io/community/consortium">Consortium</a>
+          </li>
+        
+          <li>
+            <a href="https://iiif.io/contact">Contact Us</a>
+          </li>
+        
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+</footer><script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://kit.fontawesome.com/2c3e99340f.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/api/assets/js/carouselInit.js"></script>
+
+    
+        <!-- Read the Formbutton docs at formspree.io/formbutton/docs. See more examples at codepen.io/formspree -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" />
+
+<script src="https://formspree.io/js/formbutton-v1.min.js" defer></script>
+<script>
+  /* paste this line in verbatim */
+  window.formbutton=window.formbutton||function(){(formbutton.q=formbutton.q||[]).push(arguments)};
+  /* customize formbutton below*/     
+  formbutton("create", {
+    action: "https://formspree.io/f/xbjwjlbn",
+    title: "Feedback",
+    fields: [
+      {
+        type: "radio",
+        name: "feedback_type",
+        value: "Comment",
+        label: "Comment",
+        style: {
+            display: "inline-block",
+            "padding-right": "10px"
+        }
+      },
+      {
+        type: "radio",
+        name: "feedback_type",
+        value: "Correction",
+        label: "Correction",
+        style: {
+            display: "inline-block",
+            "padding-right": "10px"
+        }
+      },
+      {
+        type: "radio",
+        name: "feedback_type",
+        value: "Bug",
+        label: "Bug",
+        style: {
+            display: "inline-block",
+            "padding-right": "10px"
+        }
+      },
+      { 
+        type: "email", 
+        label: "Email:", 
+        name: "Email",
+        required: true,
+        placeholder: "your@email.com"
+      },
+      {
+        type: "textarea",
+        label: "Message:",
+        name: "Message",
+        placeholder: "We want to hear from you! Enter your feedback here.",
+      },
+      { 
+        type: "submit",
+        value: "Submit"
+      },
+      {
+        type: "hidden",
+        name: "Page",
+        value: window.location.pathname.replaceAll('/','|'),
+        style: {
+            display: "none"
+        }
+      }
+    ],
+    buttonImg: "<i class='fas fa-comment' style='font-size:24px'/>", 
+    styles: {
+      title: {
+        backgroundColor: "#0d232d"
+      },
+      button: {
+        backgroundColor: "#0d232d"
+      }
+    }
+  });
+</script>
+
+    
+  </body>
+</html>
