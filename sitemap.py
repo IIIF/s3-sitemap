@@ -77,14 +77,11 @@ def updateSitemap(conf):
             if include:        
                 location = conf['url'] + file['Key']
                 if file['Key'].endswith('.html'):
-                    print ('loading {}'.format(file['Key']))
                     # check to see if this is a redirect html page
                     soup = BeautifulSoup(s3client.get_object(Bucket=conf['s3'], Key=file['Key'])['Body'].read().decode('utf-8'), 'html.parser')
-                    print ('checking URL {}'.format(file['Key']))
                     location = checkURL(soup, conf['url'], file['Key'])
 
                 if location not in locations:
-                    print ('Adding {}'.format(location))
                     locations[location] = file['LastModified'].strftime("%Y-%m-%d")
                 else:
                     print ('Found duplicate: {} from {}'.format(location,  conf['url'] + file['Key']))
@@ -93,12 +90,11 @@ def updateSitemap(conf):
             contents = s3client.list_objects_v2(Bucket=conf['s3'], ContinuationToken=contents['NextContinuationToken'])
         else:
             break
-    print ('Proccessed all files')
     
     locs = []
     lastmods = []
     for location in locations:
-        locs.append(location)
+        locs.append(location.replace("//","/"))
         lastmods.append(locations[location])
                 
     df = pd.DataFrame({"loc": locs, "lastmod": lastmods})
