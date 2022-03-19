@@ -4,6 +4,8 @@ import pandas as pd
 import base64
 import urllib
 from enum import Enum
+from html.parser import HTMLParser
+from bs4 import BeautifulSoup
 
 config = {
     "IIIF/website": {
@@ -40,12 +42,28 @@ config = {
 
 test = False
 
+def conicalElements(soup):
+    links = soup.find_all("link")
+
+    for link in links:
+        if link.has_attr('rel') and link.get("rel")[0] == "canonical":
+            return link.get("href")
+
+def checkURL(soup, host, path):    
+    location = host + path
+    for meta in soup.find_all('meta'):
+        if meta.get('http-equiv') == 'refresh' and 'url' in meta.get('content'):
+            conical = conicalElements(soup)
+            location = host + conical 
+            break
+    
+    return location
+
 def updateSitemap(conf):
     s3client = boto3.client('s3')
     log = ''
 
-    locs = []
-    lastmods = []
+    locations = {}
     contents = s3client.list_objects_v2(Bucket=conf['s3'])
     while True:
         for file in contents['Contents']:
@@ -55,13 +73,28 @@ def updateSitemap(conf):
                     include = True
                     break
             if include:        
-                locs.append(conf['url'] + file['Key'])
-                lastmods.append(file['LastModified'].strftime("%Y-%m-%d"))
+                location = conf['url'] + file['Key']
+                if file['Key'].endswith('.html'):
+                    # check to see if this is a redirect html page
+                    soup = BeautifulSoup(s3client.get_object(Bucket=conf['s3'], Key=file['Key'])['Body'].read().decode('utf-8'), 'html.parser')
+                    location = checkURL(soup, conf['url'], file['Key'])
+
+                if location not in locations:
+                    locations[location] = file['LastModified'].strftime("%Y-%m-%d")
+                else:
+                    print ('Found duplicate: {} from {}'.format(location,  conf['url'] + file['Key']))
+
         if contents['IsTruncated']:
             contents = s3client.list_objects_v2(Bucket=conf['s3'], ContinuationToken=contents['NextContinuationToken'])
         else:
             break
     
+    locs = []
+    lastmods = []
+    for location in locations:
+        locs.append(location)
+        lastmods.append(locations[location])
+                
     df = pd.DataFrame({"loc": locs, "lastmod": lastmods})
 
     log += "Loading sitemap to: {}/sitemap.xml".format(conf['s3']) 
