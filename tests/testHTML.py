@@ -22,7 +22,7 @@ class TestLambda(unittest.TestCase):
         filename = 'tests/fixtures/html/normal.html'
         with open(filename) as fp:
             soup = BeautifulSoup(fp, 'html.parser')
-            host = 'https://example.com'
+            host = 'https://example.com/'
 
             url = sitemap.checkURL(soup, host, filename)
 
