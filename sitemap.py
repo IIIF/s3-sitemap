@@ -3,6 +3,7 @@ import boto3
 import pandas as pd
 import base64
 import urllib
+import re
 from enum import Enum
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup
@@ -42,6 +43,14 @@ config = {
 
 test = False
 
+def constructURL(host, path):
+    if host.endswith('/'):
+        host = host[:-1]
+    if not path.startswith('/'):
+        path = "/" + path
+
+    return host + path        
+
 def canonicalElements(soup):
     links = soup.find_all("link")
 
@@ -51,13 +60,13 @@ def canonicalElements(soup):
     return None         
 
 def checkURL(soup, host, path):    
-    location = host + path
+    location = constructURL(host, path)
     canonical = canonicalElements(soup)
     if canonical:
         if 'http' in canonical:
             location = canonical
         else:
-            location = host + canonical 
+            location = constructURL(host, canonical)
 
     return location
 
@@ -75,7 +84,7 @@ def updateSitemap(conf):
                     include = True
                     break
             if include:        
-                location = conf['url'] + file['Key']
+                location = constructURL(conf['url'], file['Key'])
                 if file['Key'].endswith('.html'):
                     # check to see if this is a redirect html page
                     soup = BeautifulSoup(s3client.get_object(Bucket=conf['s3'], Key=file['Key'])['Body'].read().decode('utf-8'), 'html.parser')
@@ -84,7 +93,7 @@ def updateSitemap(conf):
                 if location not in locations:
                     locations[location] = file['LastModified'].strftime("%Y-%m-%d")
                 else:
-                    print ('Found duplicate: {} from {}'.format(location,  conf['url'] + file['Key']))
+                    print ('Found duplicate: {} from {}'.format(location,  constructURL(conf['url'], file['Key'])))
 
         if contents['IsTruncated']:
             contents = s3client.list_objects_v2(Bucket=conf['s3'], ContinuationToken=contents['NextContinuationToken'])
@@ -94,7 +103,7 @@ def updateSitemap(conf):
     locs = []
     lastmods = []
     for location in locations:
-        locs.append(location.replace("//","/"))
+        locs.append(location)
         lastmods.append(locations[location])
                 
     df = pd.DataFrame({"loc": locs, "lastmod": lastmods})
